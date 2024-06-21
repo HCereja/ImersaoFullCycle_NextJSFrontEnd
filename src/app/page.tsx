@@ -3,29 +3,16 @@ import { Title } from "@/components/Title";
 import { EventModel } from "@/models";
 import Image from "next/image";
 
-export default function Home() {
-  const events: EventModel[] = [
-    {
-      id: "1",
-      name: "Show do Queen",
-      organization: "Shows Inc.",
-      date: "2022-01-01T00:00:00",
-      price: 100,
-      rating: "Livre",
-      image_url: "",
-      location: "São Paulo, SP",
-    },
-    {
-      id: "2",
-      name: "Show dos Barões da Pisadinha",
-      organization: "Shows Inc.",
-      date: "2022-01-01T00:00:00",
-      price: 100,
-      rating: "Livre",
-      image_url: "",
-      location: "São Paulo, SP",
-    },
-  ];
+export async function getEvents(): Promise<EventModel[]> {
+  const res = await fetch("http://localhost:8080/events", {
+    cache: "no-store",
+  });
+
+  return (await res.json()).events;
+}
+
+export default async function Home() {
+  const events = await getEvents();
 
   return (
     <>
